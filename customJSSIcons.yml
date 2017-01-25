@@ -1,0 +1,35 @@
+---
+########################### Target Host(s) ###########################
+# Specify a Single host
+#       hosts: server1
+# Specify a defined group of hosts from hosts inventory
+#       hosts: production
+# Specify a group of hosts
+#       hosts: server1:server2
+########################### Specify Host(s) ##########################
+- hosts:
+########################### Do Not Modify ###########################
+  become: yes
+  vars:
+    customJSSIcons_path: /path/to/directory
+  tasks:
+    - name: Install jss-logo.png
+      copy:
+        src: "{{ customJSSIcons_path}}/jss-logo.png"
+        dest: /usr/local/jss/tomcat/webapps/ROOT/ui/images/navigation/
+        backup: yes
+        owner: jamftomcat
+        group: jamftomcat
+        mode: 0644
+
+    - name: Install logo_trans.png & osx-jss-login.png
+      copy:
+        src: "{{ customJSSIcons_path}}/{{ item }}"
+        dest: /usr/local/jss/tomcat/webapps/ROOT/ui/images/login/{{ item }}
+        backup: yes
+        owner: jamftomcat
+        group: jamftomcat
+        mode: 0644
+      with_items:
+        - logo_trans.png
+        - osx-jss-login.png
